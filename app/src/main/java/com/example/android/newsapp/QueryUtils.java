@@ -192,10 +192,8 @@ public final class QueryUtils {
                 // for that article.
                 JSONArray tags = currentArticle.getJSONArray("tags");
 
-                // Within the "tags" array extract the
-                // key called "tags", which represents a list of all properties
-                // for that article.
-                JSONObject tagObject = currentArticle.getJSONObject("tags");
+                // Within the "tags" array extract the first object
+                JSONObject tagObject = tags.getJSONObject(0);
 
                 // Extract the value for the key called "webTitle"
                 String author = tagObject.getString("webTitle");
