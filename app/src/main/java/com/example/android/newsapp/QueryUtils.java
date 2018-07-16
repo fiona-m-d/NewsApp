@@ -29,7 +29,6 @@ import java.util.List;
  */
 public final class QueryUtils {
 
-
     /**
      * Tag for the log messages
      */
@@ -172,6 +171,8 @@ public final class QueryUtils {
             // For each article in the articleObject, create an {@link Article} object
             for (int i = 0; i < news.length(); i++) {
 
+                String author = "";
+
                 // Get a single article at position i within the list of article
                 JSONObject currentArticle = news.getJSONObject(i);
 
@@ -187,16 +188,12 @@ public final class QueryUtils {
                 // Extract the value for the key called "webUrl"
                 String url = currentArticle.getString("webUrl");
 
-                // For a given article, extract the JSONArray associated with the
-                // key called "tags", which represents a list of all properties
-                // for that article.
-                JSONArray tags = currentArticle.getJSONArray("tags");
-
-                // Within the "tags" array extract the first object
-                JSONObject tagObject = tags.getJSONObject(0);
-
-                // Extract the value for the key called "webTitle"
-                String author = tagObject.getString("webTitle");
+                //get author if exist
+                JSONArray newsArrayTags = currentArticle.getJSONArray("tags");
+                if(newsArrayTags != null && newsArrayTags.length() > 0) {
+                    JSONObject currentNewsDataTags = newsArrayTags.getJSONObject(0);
+                    author = currentNewsDataTags.getString("webTitle");;
+                }
 
                 // Create a new {@link Article} object with the section, date, title, author
                 // and url from the JSON response.
