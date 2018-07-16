@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Main activity background -->
+    <color name="background">#FFF7DA</color>
+
+    <!-- Title text -->
+    <color name="text_colour_title">#FFF7DA</color>
+
+    <!-- Secondary info text -->
+    <color name="text_colour_secondary">#FFF7DA</color>
+
+    <!-- Date colour text -->
+    <color name="text_colour_date">#FFF7DA</color>
+
+</resources>
