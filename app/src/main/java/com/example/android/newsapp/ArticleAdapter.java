@@ -5,32 +5,18 @@ package com.example.android.newsapp;
  */
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.graphics.drawable.GradientDrawable;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import java.util.ArrayList;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
-
 
     private String formatDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
@@ -50,7 +36,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.news_list, parent, false);
+                    R.layout.activity_main, parent, false);
         }
 
         Article currentArticle = getItem(position);
@@ -59,8 +45,8 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
          * Code for formatting article date
          */
 
-    // get date for current article
-    String apiDate = currentArticle.getArticleDate();
+        // get date for current article
+        String apiDate = currentArticle.getArticleDate();
 
         // convert raw date into a Date Object
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss'Z'");
@@ -68,7 +54,8 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         try {
             dateObject = simpleDateFormat.parse(apiDate);
         } catch (ParseException e) {
-            e.printStackTrace();}
+            e.printStackTrace();
+        }
 
         // Find the TextView with view ID date
         TextView dateView = (TextView) listItemView.findViewById(R.id.date);
@@ -79,8 +66,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         // Display the date of the current article in that TextView
         dateView.setText(formattedDate);
 
-
-    /**
+        /**
          * Code for current title
          */
         // get TITLE for current article
@@ -91,7 +77,6 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
         // Display the TITLE of the current article in that TextView
         titleTextView.setText(title);
-
 
         /**
          * Code for current section name

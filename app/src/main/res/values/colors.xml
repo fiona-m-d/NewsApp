@@ -5,15 +5,9 @@
     <color name="colorAccent">#FF4081</color>
 
     <!-- Main activity background -->
-    <color name="background">#FFF7DA</color>
+    <color name="background">#dcdcdc</color>
 
-    <!-- Title text -->
-    <color name="text_colour_title">#FFF7DA</color>
-
-    <!-- Secondary info text -->
-    <color name="text_colour_secondary">#FFF7DA</color>
-
-    <!-- Date colour text -->
-    <color name="text_colour_date">#FFF7DA</color>
+    <!-- Text colour-->
+    <color name="text_colour">#146082</color>
 
 </resources>

@@ -19,9 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +36,6 @@ public final class QueryUtils {
      * Query the Guardian dataset and return a list of {@link Article} objects.
      */
     public static List<Article> fetchArticleData(String requestUrl) {
-        Log.i(LOG_TAG, "TEST: fetchArticleData called");
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -190,9 +187,9 @@ public final class QueryUtils {
 
                 //get author if exist
                 JSONArray newsArrayTags = currentArticle.getJSONArray("tags");
-                if(newsArrayTags != null && newsArrayTags.length() > 0) {
+                if (newsArrayTags != null && newsArrayTags.length() > 0) {
                     JSONObject currentNewsDataTags = newsArrayTags.getJSONObject(0);
-                    author = currentNewsDataTags.getString("webTitle");;
+                    author = currentNewsDataTags.getString("webTitle");
                 }
 
                 // Create a new {@link Article} object with the section, date, title, author

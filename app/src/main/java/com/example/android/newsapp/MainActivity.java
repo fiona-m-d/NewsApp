@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.app.LoaderManager;
@@ -15,6 +14,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(LOG_TAG, "TEST: MainActivity onCreate called");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_list);
@@ -98,9 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
-        }
-
-        else {
+        } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
             View loadingIndicator = findViewById(R.id.loading_spinner);
@@ -113,14 +110,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     @Override
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
-        Log.i(LOG_TAG, "TEST: onCreateLoader called");
+
         // Create a new loader for the given URL
         return new ArticleLoader(this, GARDIAN_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> articles) {
-        Log.i(LOG_TAG, "TEST: onLoadFinished called");
 
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.loading_spinner);
@@ -141,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     @Override
     public void onLoaderReset(Loader<List<Article>> loader) {
-        Log.i(LOG_TAG, "TEST: onLoaderReset called");
 
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();

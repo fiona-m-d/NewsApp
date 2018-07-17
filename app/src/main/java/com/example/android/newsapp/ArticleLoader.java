@@ -6,7 +6,6 @@ package com.example.android.newsapp;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
 
@@ -16,15 +15,18 @@ import java.util.List;
  */
 public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
 
-    /** Tag for log messages */
+    /**
+     * Tag for log messages
+     */
     private static final String LOG_TAG = ArticleLoader.class.getName();
 
-    /** Query URL */
+    /**
+     * Query URL
+     */
     private String mUrl;
 
     /**
      * Constructs a new {@link ArticleLoader}.
-
      */
     public ArticleLoader(Context context, String url) {
         super(context);
@@ -33,7 +35,6 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
 
     @Override
     protected void onStartLoading() {
-        Log.i(LOG_TAG, "TEST: onStartLoading called");
 
         forceLoad();
     }
@@ -43,7 +44,6 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
      */
     @Override
     public List<Article> loadInBackground() {
-        Log.i(LOG_TAG, "TEST: loadInBackground called");
 
         if (mUrl == null) {
             return null;
