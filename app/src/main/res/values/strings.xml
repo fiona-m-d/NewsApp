@@ -10,4 +10,38 @@
     <!--Request to Guardian API -->
     <string name="api_request"></string>
 
+    <!--Settings labels -->
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">Article Settings</string>
+
+    <!-- Strings For Section Preference -->
+    <string name="settings_section_label">Filter news by area</string>
+    <string name="settings_section_key" translatable="false">section</string>
+    <string name="settings_section_default" translatable="false">@string/settings_section_uk_value</string>
+
+    <!-- Label for section uk option [CHAR LIMIT=20] -->
+    <string name="settings_section_uk_label">UK</string>
+    <string name="settings_section_uk_value" translatable="false">uk-news</string>
+
+    <!-- Label for section us option [CHAR LIMIT=20] -->
+    <string name="settings_section_us_label">US</string>
+    <string name="settings_section_us_value" translatable="false">us-news</string>
+
+    <!-- Label for section us option [CHAR LIMIT=20] -->
+    <string name="settings_section_au_label">Australia</string>
+    <string name="settings_section_au_value" translatable="false">australia-news</string>
+
+    <!-- Strings For Order-By Preference -->
+    <string name="settings_order_by_label">Order By</string>
+    <string name="settings_order_by_key" translatable="false">order_by</string>
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_newest_value</string>
+
+    <!-- Label for order-by newest option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_newest_label">Newest</string>
+    <string name="settings_order_by_newest_value" translatable="false">newest</string>
+
+    <!-- Label for order-by oldest option [CHAR LIMIT=20] -->
+    <string name="settings_order_by_oldest_label">Oldest</string>
+    <string name="settings_order_by_oldest_value" translatable="false">oldest</string>
+
 </resources>

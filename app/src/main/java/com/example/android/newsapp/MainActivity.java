@@ -1,12 +1,16 @@
 package com.example.android.newsapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.app.LoaderManager;
@@ -18,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<Article>> {
+public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<Article>>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * TextView that is displayed when the list is empty
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
      * URL for news articles from Guardian
      */
     private static final String GARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?page-size=100&&order-by=newest&q=uk&show-tags=contributor&api-key=60c9f08d-e261-4fcc-a2ac-06e97f52501c";
+            "https://content.guardianapis.com/search?";
 
     /**
      * Constant value for the ARTICLE loader ID.
@@ -62,12 +66,18 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         // so the list can be populated in the user interface
         articleListView.setAdapter(mAdapter);
 
+        // Obtain a reference to the SharedPreferences file for this app
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        // And register to be notified of preference changes
+        // So we know when the user has adjusted the query settings
+        prefs.registerOnSharedPreferenceChangeListener(this);
+
         // Set an item click listener on the ListView, which sends an intent to a web browser
         // to open a website with more information about the selected article.
         articleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Find the currentarticle that was clicked on
+                // Find the current article that was clicked on
                 Article currentArticle = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
@@ -109,10 +119,47 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     }
 
     @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (key.equals(getString(R.string.settings_section_key)) ||
+                key.equals(getString(R.string.settings_order_by_key))){
+            // Clear the ListView as a new query will be kicked off
+            mAdapter.clear();
+
+            // Hide the empty state text view as the loading indicator will be displayed
+            mEmptyStateTextView.setVisibility(View.GONE);
+
+            // Show the loading indicator while new data is being fetched
+            View loadingIndicator = findViewById(R.id.loading_spinner);
+            loadingIndicator.setVisibility(View.VISIBLE);
+
+            // Restart the loader to requery the Guardian as the query settings have been updated
+            getLoaderManager().restartLoader(ARTICLE_LOADER_ID, null, this);
+        }
+    }
+
+    @Override
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
 
-        // Create a new loader for the given URL
-        return new ArticleLoader(this, GARDIAN_REQUEST_URL);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String section = sharedPrefs.getString(
+                getString(R.string.settings_section_key),
+                getString(R.string.settings_section_default));
+
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default)
+        );
+
+        Uri baseUri = Uri.parse(GARDIAN_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("page-size", "100&");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("section", section);
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("api-key", "60c9f08d-e261-4fcc-a2ac-06e97f52501c");
+
+        return new ArticleLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -132,6 +179,16 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         // data set. This will trigger the ListView to update.
         if (articles != null && !articles.isEmpty()) {
             mAdapter.addAll(articles);
+        }else {
+            final boolean isConnected = false;
+
+            if (isConnected) {
+                // Set empty state text to display "No articles found."
+                mEmptyStateTextView.setText(R.string.no_articles);
+            } else {
+                // Update empty state with no connection error message
+                mEmptyStateTextView.setText(R.string.no_internet_connection);
+            }
         }
     }
 
@@ -140,6 +197,23 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
